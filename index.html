@@ -1,12 +1,9 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" id="htmlRoot">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="PS Software Soluciones ofrece desarrollo de software, consultoría técnica y creación de aplicaciones a medida para empresas que buscan innovación y crecimiento digital."
-    />
+    <meta name="description" content="PS Software Soluciones ofrece desarrollo de software, consultoría técnica y creación de aplicaciones a medida para empresas que buscan innovación y crecimiento digital." />
     <title>PS Software Soluciones</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -19,421 +16,1029 @@
           extend: {
             colors: {
               brand: {
-                50: "#eff6ff",
-                100: "#dbeafe",
-                200: "#bfdbfe",
-                300: "#93c5fd",
-                400: "#60a5fa",
-                500: "#3b82f6",
-                600: "#2563eb",
-                700: "#1d4ed8",
-                800: "#1e40af",
-                900: "#172554",
+                50:"#eff6ff",100:"#dbeafe",200:"#bfdbfe",300:"#93c5fd",
+                400:"#60a5fa",500:"#3b82f6",600:"#2563eb",700:"#1d4ed8",
+                800:"#1e40af",900:"#172554",
               },
             },
-            boxShadow: {
-              soft: "0 10px 30px rgba(15, 23, 42, 0.12)",
-            },
+            boxShadow: { soft: "0 10px 30px rgba(15,23,42,0.12)" },
           },
         },
       };
     </script>
     <style>
-      html {
-        scroll-behavior: smooth;
+      html { scroll-behavior: smooth; }
+      body { font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg,#f8fbff 0%,#f1f5f9 100%); }
+
+      /* ── Floating Language Toggle ── */
+      #langToggle {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9999;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px 9px 14px;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, rgba(37,99,235,0.9), rgba(124,58,237,0.9));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 24px rgba(37,99,235,0.35);
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        letter-spacing: 0.04em;
+        user-select: none;
+      }
+      #langToggle:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(124,58,237,0.45);
+        background: linear-gradient(135deg, rgba(37,99,235,1), rgba(124,58,237,1));
+      }
+      #langFlag { font-size: 22px; line-height: 1; }
+
+      /* ── Projects Carousel Section ── */
+      #proyectos { background: #080d18; }
+
+      .carousel-viewport {
+        position: relative;
+        width: 100%;
+        height: 520px;
+        perspective: 1600px;
+        perspective-origin: 50% 50%;
+      }
+      .c-track {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
       }
 
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: linear-gradient(180deg, #f8fbff 0%, #f1f5f9 100%);
+      /* ── Individual Project Card ── */
+      .proj-card {
+        position: absolute;
+        width: 420px;
+        height: 490px;
+        left: 50%;
+        top: 50%;
+        border-radius: 26px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.6s cubic-bezier(0.34, 1.15, 0.64, 1);
+        will-change: transform, opacity, filter;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* Card States */
+      .proj-card.c-active {
+        transform: translateX(-50%) translateY(-50%) translateZ(0px) scale(1);
+        opacity: 1;
+        z-index: 10;
+        filter: none;
+        pointer-events: all;
+      }
+      .proj-card.c-next {
+        transform: translateX(calc(-50% + 360px)) translateY(-50%) translateZ(-120px) rotateY(-20deg) scale(0.82);
+        opacity: 0.68;
+        z-index: 6;
+        filter: brightness(0.7) saturate(0.8);
+        pointer-events: all;
+        cursor: pointer;
+      }
+      .proj-card.c-prev {
+        transform: translateX(calc(-50% - 360px)) translateY(-50%) translateZ(-120px) rotateY(20deg) scale(0.82);
+        opacity: 0.68;
+        z-index: 6;
+        filter: brightness(0.7) saturate(0.8);
+        pointer-events: all;
+        cursor: pointer;
+      }
+      .proj-card.c-far-next {
+        transform: translateX(calc(-50% + 620px)) translateY(-50%) translateZ(-280px) rotateY(-28deg) scale(0.62);
+        opacity: 0.25;
+        z-index: 2;
+        filter: blur(1.5px) brightness(0.5) saturate(0.5);
+        pointer-events: none;
+      }
+      .proj-card.c-far-prev {
+        transform: translateX(calc(-50% - 620px)) translateY(-50%) translateZ(-280px) rotateY(28deg) scale(0.62);
+        opacity: 0.25;
+        z-index: 2;
+        filter: blur(1.5px) brightness(0.5) saturate(0.5);
+        pointer-events: none;
+      }
+      .proj-card.c-hidden {
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+        transform: translateX(-50%) translateY(-50%) translateZ(-400px) scale(0.4);
+      }
+
+      /* Glow per project */
+      .proj-card.c-active.glow-violet { box-shadow: 0 32px 90px rgba(0,0,0,0.55), 0 0 80px rgba(129,140,248,0.22), 0 0 0 1px rgba(129,140,248,0.1); }
+      .proj-card.c-active.glow-purple { box-shadow: 0 32px 90px rgba(0,0,0,0.55), 0 0 80px rgba(124,58,237,0.25), 0 0 0 1px rgba(124,58,237,0.1); }
+      .proj-card.c-active.glow-green  { box-shadow: 0 32px 90px rgba(0,0,0,0.55), 0 0 80px rgba(52,211,153,0.22), 0 0 0 1px rgba(52,211,153,0.1); }
+      .proj-card.c-active.glow-amber  { box-shadow: 0 32px 90px rgba(0,0,0,0.55), 0 0 80px rgba(251,191,36,0.18), 0 0 0 1px rgba(251,191,36,0.08); }
+      .proj-card.c-active.glow-warm   { box-shadow: 0 32px 90px rgba(0,0,0,0.55), 0 0 80px rgba(251,146,60,0.18), 0 0 0 1px rgba(251,146,60,0.08); }
+
+      /* Card internals */
+      .card-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center top;
+      }
+      .card-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .proj-card.c-active:hover .card-bg img { transform: scale(1.04); }
+      .card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(4,7,20,0.95) 0%, rgba(4,7,20,0.6) 35%, rgba(4,7,20,0.1) 70%, transparent 100%);
+      }
+      .card-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 30px 30px 34px;
+        color: #fff;
+      }
+      .card-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.07);
+        backdrop-filter: blur(6px);
+        color: rgba(255,255,255,0.82);
+        width: fit-content;
+        margin-bottom: 12px;
+      }
+      .card-title {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 6px;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      }
+      .card-subtitle {
+        font-size: 13px;
+        color: rgba(255,255,255,0.6);
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
+      .card-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        transition: color 0.25s;
+      }
+      .proj-card.c-active .card-cta { color: rgba(255,255,255,0.55); }
+      .proj-card.c-active:hover .card-cta { color: rgba(255,255,255,0.9); }
+      .cta-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: ctaPulse 1.8s ease-in-out infinite;
+      }
+      @keyframes ctaPulse {
+        0%,100% { opacity:1; transform:scale(1); }
+        50% { opacity:0.4; transform:scale(0.6); }
+      }
+
+      /* Click hint on active */
+      .proj-card.c-active::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        border: 1.5px solid rgba(255,255,255,0.06);
+        pointer-events: none;
+        transition: border-color 0.3s;
+      }
+      .proj-card.c-active:hover::after { border-color: rgba(255,255,255,0.14); }
+
+      /* ── Nav buttons ── */
+      .c-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      }
+      .c-nav-btn:hover {
+        background: rgba(255,255,255,0.16);
+        transform: translateY(-50%) scale(1.08);
+        box-shadow: 0 6px 28px rgba(0,0,0,0.4);
+      }
+      #cPrev { left: max(16px, calc(50% - 290px)); }
+      #cNext { right: max(16px, calc(50% - 290px)); }
+
+      /* ── Dots ── */
+      .c-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 32px;
+        padding-bottom: 16px;
+      }
+      .c-dot {
+        height: 8px;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.2);
+        cursor: pointer;
+        transition: all 0.35s ease;
+        width: 8px;
+        border: none;
+        padding: 0;
+      }
+      .c-dot.active {
+        background: #3b82f6;
+        width: 28px;
+      }
+
+      /* ── Modal ── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(4,7,18,0.78);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-card {
+        background: #0d1526;
+        border-radius: 28px;
+        overflow: hidden;
+        max-width: 680px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        border: 1px solid rgba(255,255,255,0.07);
+        box-shadow: 0 48px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+        transform: scale(0.9) translateY(28px);
+        transition: transform 0.4s cubic-bezier(0.34,1.4,0.64,1);
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.1) transparent;
+      }
+      .modal-overlay.open .modal-card { transform: scale(1) translateY(0); }
+      .modal-header {
+        position: relative;
+        height: 300px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .modal-header-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center top;
+      }
+      .modal-header-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .modal-header-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom,
+          rgba(4,7,18,0.1) 0%,
+          rgba(4,7,18,0.3) 40%,
+          rgba(4,7,18,0.72) 75%,
+          rgba(4,7,18,0.92) 100%);
+      }
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(4, 7, 20, 0.68);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: background 0.2s, color 0.2s, transform 0.2s;
+      }
+      .modal-close:hover {
+        background: rgba(20, 30, 60, 0.85);
+        color: #fff;
+        transform: scale(1.1);
+      }
+      .modal-header-content {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        color: #fff;
+        /* Glass backdrop panel */
+        background: rgba(4, 7, 20, 0.68);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.07);
+        padding: 16px 20px 18px;
+        max-width: fit-content;
+        min-width: 260px;
+      }
+      .modal-badge-text {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.65);
+        margin-bottom: 7px;
+      }
+      .modal-title-text {
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+        color: #fff;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      }
+      .modal-body {
+        padding: 28px 30px 36px;
+      }
+      .modal-desc-text {
+        font-size: 14.5px;
+        line-height: 1.75;
+        color: #94a3b8;
+        margin-bottom: 22px;
+      }
+      .modal-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-bottom: 28px;
+      }
+      .modal-tag {
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.05);
+        color: #64748b;
+        border: 1px solid rgba(255,255,255,0.07);
+        font-weight: 600;
+      }
+      .modal-visit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 13px 26px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        text-decoration: none;
+        box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .modal-visit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(37,99,235,0.45);
+      }
+
+      /* ── i18n ── */
+      [data-i18n] { transition: opacity 0.12s ease; }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+        .proj-card { width: 310px; height: 400px; }
+        .proj-card.c-next { transform: translateX(calc(-50% + 250px)) translateY(-50%) translateZ(-100px) rotateY(-18deg) scale(0.76); }
+        .proj-card.c-prev { transform: translateX(calc(-50% - 250px)) translateY(-50%) translateZ(-100px) rotateY(18deg) scale(0.76); }
+        .proj-card.c-far-next, .proj-card.c-far-prev { opacity: 0; pointer-events: none; }
+        #cPrev { left: 6px; }
+        #cNext { right: 6px; }
+        .carousel-viewport { height: 440px; }
+        .card-title { font-size: 22px; }
       }
     </style>
   </head>
   <body class="text-slate-800 antialiased">
-    <header class="bg-slate-950 text-white shadow-lg">
-      <div
-        class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
-      >
-        <div>
-          <h1 class="text-xl font-bold tracking-wide">
-            PS Software Soluciones
-          </h1>
-        </div>
 
-        <button
-          id="menuButton"
-          type="button"
+    <!-- ── Floating Language Toggle ── -->
+    <button id="langToggle" aria-label="Switch language">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+      <span class="font-bold tracking-widest text-[11px]"><span id="lblEn">EN</span> <span class="opacity-40">|</span> <span id="lblEs">ES</span></span>
+    </button>
+
+    <!-- ── Header ── -->
+    <header class="bg-slate-950 text-white shadow-lg">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div>
+          <h1 class="text-xl font-bold tracking-wide">PS Software Soluciones</h1>
+        </div>
+        <button id="menuButton" type="button"
           class="inline-flex items-center rounded-lg border border-white/20 px-3 py-2 text-sm md:hidden"
-          aria-label="Abrir menú"
-          aria-expanded="false"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.8"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+          aria-label="Abrir menú" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
-
         <nav id="mobileMenu" class="hidden gap-6 text-sm md:flex">
-          <a href="#servicios" class="transition hover:text-blue-300"
-            >Servicios</a
-          >
-          <a href="#nosotros" class="transition hover:text-blue-300"
-            >Nosotros</a
-          >
-          <a href="#contacto" class="transition hover:text-blue-300"
-            >Contacto</a
-          >
+          <a href="#servicios" class="transition hover:text-blue-300" data-i18n="nav_services">Servicios</a>
+          <a href="#proyectos" class="transition hover:text-blue-300" data-i18n="nav_projects">Proyectos</a>
+          <a href="#nosotros"  class="transition hover:text-blue-300" data-i18n="nav_about">Nosotros</a>
+          <a href="#contacto"  class="transition hover:text-blue-300" data-i18n="nav_contact">Contacto</a>
         </nav>
       </div>
-
-      <div
-        id="mobileNav"
-        class="hidden border-t border-white/10 bg-slate-950 md:hidden"
-      >
+      <div id="mobileNav" class="hidden border-t border-white/10 bg-slate-950 md:hidden">
         <nav class="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-4 text-sm">
-          <a href="#servicios" class="transition hover:text-blue-300"
-            >Servicios</a
-          >
-          <a href="#nosotros" class="transition hover:text-blue-300"
-            >Nosotros</a
-          >
-          <a href="#contacto" class="transition hover:text-blue-300"
-            >Contacto</a
-          >
+          <a href="#servicios" class="transition hover:text-blue-300" data-i18n="nav_services">Servicios</a>
+          <a href="#proyectos" class="transition hover:text-blue-300" data-i18n="nav_projects">Proyectos</a>
+          <a href="#nosotros"  class="transition hover:text-blue-300" data-i18n="nav_about">Nosotros</a>
+          <a href="#contacto"  class="transition hover:text-blue-300" data-i18n="nav_contact">Contacto</a>
         </nav>
       </div>
     </header>
 
     <main>
+      <!-- ── Hero ── -->
       <section class="relative overflow-hidden bg-slate-950 text-white">
-        <div
-          class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.35),_transparent_35%),radial-gradient(circle_at_bottom_left,_rgba(37,99,235,0.25),_transparent_40%)]"
-        ></div>
-        <div
-          class="relative mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:py-28"
-        >
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.35),_transparent_35%),radial-gradient(circle_at_bottom_left,_rgba(37,99,235,0.25),_transparent_40%)]"></div>
+        <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:py-28">
           <div>
-            <span
-              class="inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-1 text-sm font-medium text-blue-200"
-            >
-              Tecnología que impulsa resultados
-            </span>
-            <h2
-              class="mt-6 text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl"
-            >
-              Soluciones de desarrollo de software y aplicaciones a medida
-            </h2>
-            <p class="mt-5 max-w-2xl text-base text-slate-300 sm:text-lg">
-              En PS Software Soluciones transformamos ideas en plataformas
-              digitales confiables, escalables y alineadas con tus objetivos de
-              negocio.
-            </p>
+            <span class="inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-1 text-sm font-medium text-blue-200" data-i18n="hero_badge">Tecnología que impulsa resultados</span>
+            <h2 class="mt-6 text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl" data-i18n="hero_h2">Soluciones de desarrollo de software y aplicaciones a medida</h2>
+            <p class="mt-5 max-w-2xl text-base text-slate-300 sm:text-lg" data-i18n="hero_p">En PS Software Soluciones transformamos ideas en plataformas digitales confiables, escalables y alineadas con tus objetivos de negocio.</p>
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#contacto"
-                class="inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-blue-500 sm:w-auto"
-              >
-                Contactar ahora
-              </a>
-              <a
-                href="#servicios"
-                class="inline-flex w-full items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:border-blue-300 hover:text-blue-200 sm:w-auto"
-              >
-                Ver servicios
-              </a>
+              <a href="#contacto" class="inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-blue-500 sm:w-auto" data-i18n="hero_cta1">Contactar ahora</a>
+              <a href="#servicios" class="inline-flex w-full items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:border-blue-300 hover:text-blue-200 sm:w-auto" data-i18n="hero_cta2">Ver servicios</a>
             </div>
           </div>
-
-          <div
-            class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur-sm"
-          >
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur-sm">
             <div class="grid gap-4 sm:grid-cols-2">
               <div class="rounded-2xl bg-slate-900/80 p-5">
-                <p class="text-sm text-slate-400">Experiencia</p>
-                <p class="mt-2 text-3xl font-bold text-white">100%</p>
-                <p class="mt-1 text-sm text-slate-300">Enfoque personalizado</p>
+                <p class="text-sm text-slate-400" data-i18n="hc_exp_label">Experiencia</p>
+                <p class="mt-2 text-3xl font-bold text-white" data-i18n="hc_exp_val">100%</p>
+                <p class="mt-1 text-sm text-slate-300" data-i18n="hc_exp_sub">Enfoque personalizado</p>
               </div>
               <div class="rounded-2xl bg-blue-600/90 p-5">
-                <p class="text-sm text-blue-100">Entrega</p>
-                <p class="mt-2 text-3xl font-bold text-white">A medida</p>
-                <p class="mt-1 text-sm text-blue-50">
-                  Soluciones pensadas para tu negocio
-                </p>
+                <p class="text-sm text-blue-100" data-i18n="hc_del_label">Entrega</p>
+                <p class="mt-2 text-3xl font-bold text-white" data-i18n="hc_del_val">A medida</p>
+                <p class="mt-1 text-sm text-blue-50" data-i18n="hc_del_sub">Soluciones pensadas para tu negocio</p>
               </div>
               <div class="rounded-2xl bg-slate-900/80 p-5 sm:col-span-2">
-                <p class="text-sm text-slate-400">Nuestra propuesta</p>
-                <p class="mt-2 text-lg font-semibold text-white">
-                  Diseñamos software robusto, moderno y orientado a resultados
-                  reales.
-                </p>
+                <p class="text-sm text-slate-400" data-i18n="hc_prop_label">Nuestra propuesta</p>
+                <p class="mt-2 text-lg font-semibold text-white" data-i18n="hc_prop_val">Diseñamos software robusto, moderno y orientado a resultados reales.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <!-- ── Services ── -->
       <section id="servicios" class="mx-auto max-w-6xl px-6 py-20">
         <div class="mb-10 text-center">
-          <h3 class="text-3xl font-bold text-slate-900">Servicios</h3>
-          <p class="mx-auto mt-3 max-w-2xl text-slate-600">
-            Ayudamos a empresas y emprendedores a convertir necesidades técnicas
-            en soluciones digitales eficaces.
-          </p>
+          <h3 class="text-3xl font-bold text-slate-900" data-i18n="svc_heading">Servicios</h3>
+          <p class="mx-auto mt-3 max-w-2xl text-slate-600" data-i18n="svc_sub">Ayudamos a empresas y emprendedores a convertir necesidades técnicas en soluciones digitales eficaces.</p>
         </div>
-
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <article
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div
-              class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.8"
-                  d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
+          <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
-            <h4 class="text-xl font-semibold text-slate-900">Desarrollo web</h4>
-            <p class="mt-3 text-slate-600">
-              Sitios web y plataformas modernas con una experiencia visual
-              clara, rápida y orientada a resultados.
-            </p>
+            <h4 class="text-xl font-semibold text-slate-900" data-i18n="svc1_title">Desarrollo web</h4>
+            <p class="mt-3 text-slate-600" data-i18n="svc1_desc">Sitios web y plataformas modernas con una experiencia visual clara, rápida y orientada a resultados.</p>
           </article>
-
-          <article
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div
-              class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.8"
-                  d="M9.663 17h4.674M12 3v2m6.364 2.636l-1.414 1.414M21 12h-2m-2.636 6.364l-1.414-1.414M12 21v-2m-6.364-2.636l1.414-1.414M3 12h2m2.636-6.364l1.414 1.414"
-                />
-              </svg>
+          <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.663 17h4.674M12 3v2m6.364 2.636l-1.414 1.414M21 12h-2m-2.636 6.364l-1.414-1.414M12 21v-2m-6.364-2.636l1.414-1.414M3 12h2m2.636-6.364l1.414 1.414"/></svg>
             </div>
-            <h4 class="text-xl font-semibold text-slate-900">
-              Consultoría técnica
-            </h4>
-            <p class="mt-3 text-slate-600">
-              Acompañamiento estratégico para definir arquitecturas, procesos y
-              soluciones tecnológicas adecuadas al negocio.
-            </p>
+            <h4 class="text-xl font-semibold text-slate-900" data-i18n="svc2_title">Consultoría técnica</h4>
+            <p class="mt-3 text-slate-600" data-i18n="svc2_desc">Acompañamiento estratégico para definir arquitecturas, procesos y soluciones tecnológicas adecuadas al negocio.</p>
           </article>
-
-          <article
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div
-              class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.8"
-                  d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2zm3-16h4"
-                />
-              </svg>
+          <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div class="mb-4 inline-flex rounded-xl bg-blue-100 p-3 text-blue-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2zm3-16h4"/></svg>
             </div>
-            <h4 class="text-xl font-semibold text-slate-900">
-              Creación de aplicaciones
-            </h4>
-            <p class="mt-3 text-slate-600">
-              Desarrollo de apps y herramientas digitales a medida para
-              optimizar operaciones, productividad y atención al cliente.
-            </p>
+            <h4 class="text-xl font-semibold text-slate-900" data-i18n="svc3_title">Creación de aplicaciones</h4>
+            <p class="mt-3 text-slate-600" data-i18n="svc3_desc">Desarrollo de apps y herramientas digitales a medida para optimizar operaciones, productividad y atención al cliente.</p>
           </article>
         </div>
       </section>
 
+      <!-- ── Projects Carousel ── -->
+      <section id="proyectos" style="background:#080d18; padding: 80px 0 60px;">
+        <div class="mx-auto max-w-6xl px-6 mb-14 text-center">
+          <span class="inline-flex rounded-full border border-blue-400/20 bg-blue-500/10 px-4 py-1 text-sm font-semibold text-blue-300" data-i18n="proj_badge">Portafolio</span>
+          <h3 class="mt-4 text-3xl font-bold text-white" data-i18n="proj_heading">Proyectos destacados</h3>
+          <p class="mx-auto mt-3 max-w-xl text-slate-500 text-sm" data-i18n="proj_sub">Plataformas reales construidas y desplegadas en producción para clientes y negocios.</p>
+        </div>
+
+        <div class="carousel-viewport" id="carouselViewport">
+          <div class="c-track" id="carouselTrack"></div>
+          <button class="c-nav-btn" id="cPrev" aria-label="Previous project">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="c-nav-btn" id="cNext" aria-label="Next project">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="c-dots" id="cDots"></div>
+      </section>
+
+      <!-- ── About ── -->
       <section id="nosotros" class="bg-slate-900 text-white">
-        <div
-          class="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center"
-        >
+        <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <h3 class="text-3xl font-bold">Sobre nosotros</h3>
-            <p class="mt-4 text-slate-300">
-              PS Software Soluciones nace con la misión de brindar soluciones
-              tecnológicas confiables, eficientes y alineadas con las
-              necesidades reales de cada cliente.
-            </p>
-            <p class="mt-3 text-slate-300">
-              Trabajamos con enfoque en calidad, comunicación clara y resultados
-              sostenibles, construyendo software que fortalece la presencia
-              digital y la operación de negocios modernos.
-            </p>
+            <h3 class="text-3xl font-bold" data-i18n="about_heading">Sobre nosotros</h3>
+            <p class="mt-4 text-slate-300" data-i18n="about_p1">PS Software Soluciones nace con la misión de brindar soluciones tecnológicas confiables, eficientes y alineadas con las necesidades reales de cada cliente.</p>
+            <p class="mt-3 text-slate-300" data-i18n="about_p2">Trabajamos con enfoque en calidad, comunicación clara y resultados sostenibles, construyendo software que fortalece la presencia digital y la operación de negocios modernos.</p>
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="rounded-2xl bg-white/5 p-5 backdrop-blur-sm">
-              <p class="text-sm text-slate-400">Compromiso</p>
-              <p class="mt-2 text-lg font-semibold">
-                Calidad técnica y atención cercana
-              </p>
+              <p class="text-sm text-slate-400" data-i18n="about_c1_label">Compromiso</p>
+              <p class="mt-2 text-lg font-semibold" data-i18n="about_c1_val">Calidad técnica y atención cercana</p>
             </div>
             <div class="rounded-2xl bg-white/5 p-5 backdrop-blur-sm">
-              <p class="text-sm text-slate-400">Enfoque</p>
-              <p class="mt-2 text-lg font-semibold">
-                Soluciones pensadas para crecer
-              </p>
+              <p class="text-sm text-slate-400" data-i18n="about_c2_label">Enfoque</p>
+              <p class="mt-2 text-lg font-semibold" data-i18n="about_c2_val">Soluciones pensadas para crecer</p>
             </div>
-            <div
-              class="rounded-2xl bg-white/5 p-5 sm:col-span-2 backdrop-blur-sm"
-            >
-              <p class="text-sm text-slate-400">Confianza</p>
-              <p class="mt-2 text-lg font-semibold">
-                Trabajamos con rigor, transparencia y profesionalismo en cada
-                proyecto.
-              </p>
+            <div class="rounded-2xl bg-white/5 p-5 sm:col-span-2 backdrop-blur-sm">
+              <p class="text-sm text-slate-400" data-i18n="about_c3_label">Confianza</p>
+              <p class="mt-2 text-lg font-semibold" data-i18n="about_c3_val">Trabajamos con rigor, transparencia y profesionalismo en cada proyecto.</p>
             </div>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- ── Footer / Contact ── -->
     <footer id="contacto" class="bg-slate-950 text-white">
       <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2">
         <div>
-          <h3 class="text-3xl font-bold">Contacto</h3>
-          <p class="mt-4 max-w-lg text-slate-300">
-            Estamos listos para ayudarte a materializar tu idea o mejorar tu
-            presencia digital con soluciones tecnológicas a medida.
-          </p>
+          <h3 class="text-3xl font-bold" data-i18n="contact_heading">Contacto</h3>
+          <p class="mt-4 max-w-lg text-slate-300" data-i18n="contact_p">Estamos listos para ayudarte a materializar tu idea o mejorar tu presencia digital con soluciones tecnológicas a medida.</p>
           <div class="mt-6 space-y-3 text-sm text-slate-300">
-            <p>
-              <strong class="text-white">Correo:</strong> psanabria999@gmail.com
-            </p>
-            <p><strong class="text-white">WhatsApp:</strong> +57 3157805655</p>
+            <p><strong class="text-white" data-i18n="contact_email_label">Correo:</strong> psanabria999@gmail.com</p>
+            <p><strong class="text-white" data-i18n="contact_wa_label">WhatsApp:</strong> +57 3157805655</p>
           </div>
           <div class="mt-6 flex gap-4 text-sm">
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="transition hover:text-blue-300"
-              >LinkedIn</a
-            >
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="transition hover:text-blue-300"
-              >Instagram</a
-            >
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="transition hover:text-blue-300"
-              >Facebook</a
-            >
+            <a href="https://www.linkedin.com/in/pedrosanabria9/" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 transition hover:text-blue-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
           </div>
         </div>
-
         <form class="rounded-2xl bg-white p-6 text-slate-900 shadow-soft">
           <div class="grid gap-4">
             <div>
-              <label for="nombre" class="mb-1 block text-sm font-semibold"
-                >Nombre</label
-              >
-              <input
-                id="nombre"
-                type="text"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                placeholder="Tu nombre"
-              />
+              <label for="nombre" class="mb-1 block text-sm font-semibold" data-i18n="form_name_label">Nombre</label>
+              <input id="nombre" type="text" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Tu nombre" data-i18n-ph="form_name_ph"/>
             </div>
             <div>
-              <label for="email" class="mb-1 block text-sm font-semibold"
-                >Correo electrónico</label
-              >
-              <input
-                id="email"
-                type="email"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                placeholder="tu@email.com"
-              />
+              <label for="email" class="mb-1 block text-sm font-semibold" data-i18n="form_email_label">Correo electrónico</label>
+              <input id="email" type="email" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="tu@email.com" data-i18n-ph="form_email_ph"/>
             </div>
             <div>
-              <label for="mensaje" class="mb-1 block text-sm font-semibold"
-                >Mensaje</label
-              >
-              <textarea
-                id="mensaje"
-                rows="4"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                placeholder="Cuéntanos sobre tu proyecto"
-              ></textarea>
+              <label for="mensaje" class="mb-1 block text-sm font-semibold" data-i18n="form_msg_label">Mensaje</label>
+              <textarea id="mensaje" rows="4" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Cuéntanos sobre tu proyecto" data-i18n-ph="form_msg_ph"></textarea>
             </div>
-            <button
-              type="button"
-              class="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition duration-300 hover:bg-blue-500"
-            >
-              Enviar mensaje
-            </button>
+            <button type="button" class="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition duration-300 hover:bg-blue-500" data-i18n="form_btn">Enviar mensaje</button>
           </div>
         </form>
       </div>
       <div class="border-t border-white/10">
-        <div
-          class="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-6 py-5 text-sm text-slate-400 md:flex-row"
-        >
-          <p>
-            © <span id="year"></span> PS Software Soluciones. Todos los derechos
-            reservados.
-          </p>
-          <p>Desarrollo profesional y soluciones digitales confiables.</p>
+        <div class="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-6 py-5 text-sm text-slate-400 md:flex-row">
+          <p>© <span id="year"></span> PS Software Soluciones. <span data-i18n="footer_copy">Todos los derechos reservados.</span></p>
+          <p data-i18n="footer_sub">Desarrollo profesional y soluciones digitales confiables.</p>
         </div>
       </div>
     </footer>
 
+    <!-- ── Modal ── -->
+    <div id="projectModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-header-bg" id="modalBg">
+            <img id="modalImg" src="" alt="" onerror="this.style.display='none'"/>
+          </div>
+          <div class="modal-header-overlay"></div>
+          <button class="modal-close" id="modalClose" aria-label="Cerrar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="modal-header-content">
+            <p class="modal-badge-text" id="modalBadge"></p>
+            <h2 class="modal-title-text" id="modalTitle"></h2>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc-text" id="modalDesc"></p>
+          <div class="modal-tags" id="modalTags"></div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="modal-visit-btn" id="modalLink">
+            <span id="modalLinkText">Ver proyecto</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
+      // ─────────────────────────────────────────────────
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
 
-      const menuButton = document.getElementById("menuButton");
-      const mobileNav = document.getElementById("mobileNav");
-
+      // Mobile nav
+      const menuButton = document.getElementById('menuButton');
+      const mobileNav  = document.getElementById('mobileNav');
       if (menuButton && mobileNav) {
-        menuButton.addEventListener("click", () => {
-          const isHidden = mobileNav.classList.toggle("hidden");
-          menuButton.setAttribute("aria-expanded", String(!isHidden));
+        menuButton.addEventListener('click', () => {
+          const hidden = mobileNav.classList.toggle('hidden');
+          menuButton.setAttribute('aria-expanded', String(!hidden));
         });
       }
+
+      // ─────────────────────────────────────────────────
+      // Projects Data
+      // Place screenshot files in ./img/ to show real previews.
+      // Filenames: sophos.jpg | saberkuest.jpg | keto.jpg | callejeros.jpg | joseph.jpg
+      const PROJECTS = [
+        {
+          id: 'sophos',
+          gradient: 'linear-gradient(140deg,#0f0f2e 0%,#1a1550 40%,#2d2060 70%,#1e1b4b 100%)',
+          glowClass: 'glow-violet',
+          badge_es: 'SaaS · EdTech · IA',
+          badge_en: 'SaaS · EdTech · AI',
+          title: 'Sophos Core',
+          subtitle_es: 'La gestión académica del futuro, hoy.',
+          subtitle_en: 'Academic management of the future, today.',
+          desc_es: 'Plataforma SaaS multi-tenant para gestión académica con control de acceso por roles (RBAC). Integración con Google Gemini AI para generación automatizada de reportes pedagógicos en el observador del estudiante. Pagos y suscripciones para colegios mediante Mercado Pago. Arquitectura de datos segura con Row Level Security en Supabase.',
+          desc_en: 'Multi-tenant SaaS platform for academic management with role-based access control (RBAC). Google Gemini AI integration for automated pedagogical report generation. School payments and subscriptions via Mercado Pago. Secure data architecture with Row Level Security on Supabase.',
+          tags: ['Next.js','React 19','TypeScript','Supabase','PostgreSQL','Gemini AI','Mercado Pago','Tailwind CSS'],
+          url: 'https://www.sophoscore.com/',
+          img: 'https://image.thum.io/get/width/1280/crop/800/https://www.sophoscore.com/',
+          cta_es: 'Explorar',
+          cta_en: 'Explore',
+          visit_es: 'Ver Sophos Core',
+          visit_en: 'View Sophos Core',
+        },
+        {
+          id: 'saber',
+          gradient: 'linear-gradient(140deg,#0c0c28 0%,#120d35 40%,#1e1055 70%,#2d1b6b 100%)',
+          glowClass: 'glow-purple',
+          badge_es: 'Quiz · EdTech · Tiempo Real',
+          badge_en: 'Quiz · EdTech · Real-Time',
+          title: 'SaberKuest',
+          subtitle_es: 'Portal avanzado de preparación ICFES con IA.',
+          subtitle_en: 'Advanced ICFES prep portal with AI.',
+          desc_es: 'Plataforma interactiva de quizzes en tiempo real para preparación de pruebas ICFES. Multijugador con sala de clases controlada por el docente, scoreboard en vivo y banco de preguntas propio. Soporta opción múltiple, lectura comprensiva y banco de vocabulario. Modo película para pausas activas con frases filosóficas.',
+          desc_en: 'Interactive real-time quiz platform for ICFES exam preparation. Multiplayer classroom mode controlled by the teacher, live scoreboard and custom question bank. Supports multiple choice, reading comprehension and vocabulary bank formats. Movie mode for active breaks with philosophical quotes.',
+          tags: ['Vite + React','Firebase','Realtime Database','TypeScript','Tailwind CSS'],
+          url: 'https://saberkuest.com/',
+          img: 'https://image.thum.io/get/width/1280/crop/800/https://saberkuest.com/',
+          cta_es: 'Explorar',
+          cta_en: 'Explore',
+          visit_es: 'Ver SaberKuest',
+          visit_en: 'View SaberKuest',
+        },
+        {
+          id: 'keto',
+          gradient: 'linear-gradient(140deg,#031a10 0%,#053a22 40%,#065f3a 70%,#047857 100%)',
+          glowClass: 'glow-green',
+          badge_es: 'Menú Digital · Delivery · Keto',
+          badge_en: 'Digital Menu · Delivery · Keto',
+          title: 'KetoBoutique',
+          subtitle_es: 'Experiencia gastronómica keto premium.',
+          subtitle_en: 'Premium keto gastronomic experience.',
+          desc_es: 'Plataforma de delivery premium para restaurante keto. Menú digital interactivo categorizado (Keto, Alto Proteína, Premium), carrito y checkout, panel de administración y soporte bilingüe ES/EN. Diseño boutique "Emerald & Ether" con glassmorphism y tipografía premium.',
+          desc_en: 'Premium delivery platform for a keto restaurant. Interactive categorized digital menu (Keto, High Protein, Premium), cart and checkout, admin panel, and ES/EN bilingual support. Boutique "Emerald & Ether" design with glassmorphism and premium typography.',
+          tags: ['Next.js','TypeScript','Tailwind CSS','Supabase'],
+          url: 'https://keto-premium.vercel.app/',
+          img: 'https://image.thum.io/get/width/1280/crop/800/https://keto-premium.vercel.app/',
+          cta_es: 'Explorar',
+          cta_en: 'Explore',
+          visit_es: 'Ver KetoBoutique',
+          visit_en: 'View KetoBoutique',
+        },
+        {
+          id: 'callejeros',
+          gradient: 'linear-gradient(140deg,#180800 0%,#3d1205 40%,#6b2009 70%,#92400e 100%)',
+          glowClass: 'glow-amber',
+          badge_es: 'Fast Food · Pedidos en Línea',
+          badge_en: 'Fast Food · Online Orders',
+          title: 'Los Callejeros',
+          subtitle_es: 'Sabor brutal directo al fuego.',
+          subtitle_en: 'Brutal flavor straight from the fire.',
+          desc_es: 'Aplicación de pedidos en línea para negocio de comida rápida. Menú interactivo con platos y bebidas, carrito y checkout, integración con WhatsApp para avisos al negocio, horario de atención y mascota de marca. Diseño oscuro con identidad visual de marca fuerte y llamativa.',
+          desc_en: 'Online ordering app for a fast-food business. Interactive menu with food and drinks, cart and checkout, WhatsApp integration for business notifications, business hours, and brand mascot. Dark design with a strong and striking brand visual identity.',
+          tags: ['Astro','React','Supabase','Tailwind CSS'],
+          url: 'https://www.los-callejeros-fastfood.com/',
+          img: 'https://image.thum.io/get/width/1280/crop/800/https://www.los-callejeros-fastfood.com/',
+          cta_es: 'Explorar',
+          cta_en: 'Explore',
+          visit_es: 'Ver Los Callejeros',
+          visit_en: 'View Los Callejeros',
+        },
+        {
+          id: 'joseph',
+          gradient: 'linear-gradient(140deg,#150800 0%,#2c1204 40%,#4a1e08 70%,#6b2f0c 100%)',
+          glowClass: 'glow-warm',
+          badge_es: 'Historia · Patrimonio · Colombia',
+          badge_en: 'History · Heritage · Colombia',
+          title: 'Joseph Ximénez',
+          subtitle_es: 'Ermitaño y mártir del Desierto de la Candelaria.',
+          subtitle_en: 'Hermit and martyr of the Candelaria Desert.',
+          desc_es: 'Sitio web editorial y cultural dedicado al ermitaño Joseph Ximénez (1632–1688), condenado por la Inquisición de Cartagena de Indias. Plataforma de divulgación histórica con galería, blog y contexto histórico. Diseño editorial oscuro con tipografía serif de carácter histórico.',
+          desc_en: 'Editorial and cultural website dedicated to hermit Joseph Ximénez (1632–1688), condemned by the Cartagena Inquisition. Historical outreach platform with gallery, blog and historical context. Dark editorial design with historical serif typography.',
+          tags: ['Next.js','TypeScript','Tailwind CSS'],
+          url: 'https://www.joseph-ximenez.com/',
+          img: 'https://image.thum.io/get/width/1280/crop/800/https://www.joseph-ximenez.com/',
+          cta_es: 'Explorar',
+          cta_en: 'Explore',
+          visit_es: 'Ver Joseph Ximénez',
+          visit_en: 'View Joseph Ximénez',
+        },
+      ];
+
+      // Carousel Engine
+      let activeIdx = 0;
+
+      function buildCarousel() {
+        const track = document.getElementById('carouselTrack');
+        const dots  = document.getElementById('cDots');
+        track.innerHTML = '';
+        dots.innerHTML  = '';
+
+        PROJECTS.forEach((p, i) => {
+          // Card
+          const card = document.createElement('div');
+          card.className = `proj-card ${p.glowClass}`;
+          card.id = `pcard-${i}`;
+          card.innerHTML = `
+            <div class="card-bg" style="background:${p.gradient}"></div>
+            <div class="card-overlay"></div>
+            <div class="card-content">
+              <div class="card-badge" id="cbadge-${i}">${p.badge_es}</div>
+              <div class="card-title">${p.title}</div>
+              <div class="card-subtitle" id="csub-${i}">${p.subtitle_es}</div>
+              <div class="card-cta">
+                <span class="cta-dot"></span>
+                <span id="ccta-${i}">${p.cta_es}</span>
+              </div>
+            </div>`;
+          card.addEventListener('click', () => {
+            if (i === activeIdx) openModal(i);
+            else goTo(i);
+          });
+          track.appendChild(card);
+
+          // Dot
+          const dot = document.createElement('button');
+          dot.className = 'c-dot';
+          dot.setAttribute('aria-label', `Go to ${p.title}`);
+          dot.addEventListener('click', () => goTo(i));
+          dots.appendChild(dot);
+        });
+
+        updateCarousel();
+      }
+
+      function goTo(idx) {
+        const n = PROJECTS.length;
+        activeIdx = ((idx % n) + n) % n;
+        updateCarousel();
+      }
+
+      function updateCarousel() {
+        const n = PROJECTS.length;
+        PROJECTS.forEach((_, i) => {
+          const card = document.getElementById(`pcard-${i}`);
+          const dot  = document.querySelectorAll('.c-dot')[i];
+          let offset = ((i - activeIdx + n) % n);
+          if (offset > n / 2) offset -= n; // range: -(n/2) … (n/2)
+
+          card.classList.remove('c-active','c-prev','c-next','c-far-prev','c-far-next','c-hidden');
+          if      (offset ===  0) card.classList.add('c-active');
+          else if (offset ===  1) card.classList.add('c-next');
+          else if (offset === -1) card.classList.add('c-prev');
+          else if (offset >=  2)  card.classList.add('c-far-next');
+          else if (offset <= -2)  card.classList.add('c-far-prev');
+          else                    card.classList.add('c-hidden');
+
+          if (dot) dot.classList.toggle('active', i === activeIdx);
+        });
+      }
+
+      // Nav buttons
+      document.getElementById('cNext').addEventListener('click', () => goTo(activeIdx + 1));
+      document.getElementById('cPrev').addEventListener('click', () => goTo(activeIdx - 1));
+
+      // Keyboard
+      document.addEventListener('keydown', e => {
+        if (document.getElementById('projectModal').classList.contains('open')) return;
+        if (e.key === 'ArrowRight') goTo(activeIdx + 1);
+        if (e.key === 'ArrowLeft')  goTo(activeIdx - 1);
+      });
+
+      // Touch / swipe
+      let touchStartX = 0;
+      const vp = document.getElementById('carouselViewport');
+      vp.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+      vp.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 48) dx < 0 ? goTo(activeIdx + 1) : goTo(activeIdx - 1);
+      });
+
+      buildCarousel();
+
+      // ─────────────────────────────────────────────────
+      // Modal
+      function openModal(idx) {
+        const p    = PROJECTS[idx];
+        const lang = currentLang;
+        const bg   = document.getElementById('modalBg');
+        bg.style.background = p.gradient;
+        const img = document.getElementById('modalImg');
+        img.src = p.img;
+        img.alt = p.title;
+        img.style.display = '';
+        document.getElementById('modalBadge').textContent = p[`badge_${lang}`];
+        document.getElementById('modalTitle').textContent = p.title;
+        document.getElementById('modalDesc').textContent  = p[`desc_${lang}`];
+        document.getElementById('modalTags').innerHTML    = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+        document.getElementById('modalLink').href         = p.url;
+        document.getElementById('modalLinkText').textContent = p[`visit_${lang}`];
+        document.getElementById('projectModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        document.getElementById('projectModal').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('projectModal').addEventListener('click', e => {
+        if (e.target === document.getElementById('projectModal')) closeModal();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+      // ─────────────────────────────────────────────────
+      // i18n
+      const TR = {
+        es: {
+          nav_services:'Servicios', nav_projects:'Proyectos', nav_about:'Nosotros', nav_contact:'Contacto',
+          hero_badge:'Tecnología que impulsa resultados',
+          hero_h2:'Soluciones de desarrollo de software y aplicaciones a medida',
+          hero_p:'En PS Software Soluciones transformamos ideas en plataformas digitales confiables, escalables y alineadas con tus objetivos de negocio.',
+          hero_cta1:'Contactar ahora', hero_cta2:'Ver servicios',
+          hc_exp_label:'Experiencia', hc_exp_val:'100%', hc_exp_sub:'Enfoque personalizado',
+          hc_del_label:'Entrega', hc_del_val:'A medida', hc_del_sub:'Soluciones pensadas para tu negocio',
+          hc_prop_label:'Nuestra propuesta', hc_prop_val:'Diseñamos software robusto, moderno y orientado a resultados reales.',
+          svc_heading:'Servicios', svc_sub:'Ayudamos a empresas y emprendedores a convertir necesidades técnicas en soluciones digitales eficaces.',
+          svc1_title:'Desarrollo web', svc1_desc:'Sitios web y plataformas modernas con una experiencia visual clara, rápida y orientada a resultados.',
+          svc2_title:'Consultoría técnica', svc2_desc:'Acompañamiento estratégico para definir arquitecturas, procesos y soluciones tecnológicas adecuadas al negocio.',
+          svc3_title:'Creación de aplicaciones', svc3_desc:'Desarrollo de apps y herramientas digitales a medida para optimizar operaciones, productividad y atención al cliente.',
+          proj_badge:'Portafolio', proj_heading:'Proyectos destacados', proj_sub:'Plataformas reales construidas y desplegadas en producción para clientes y negocios.',
+          about_heading:'Sobre nosotros',
+          about_p1:'PS Software Soluciones nace con la misión de brindar soluciones tecnológicas confiables, eficientes y alineadas con las necesidades reales de cada cliente.',
+          about_p2:'Trabajamos con enfoque en calidad, comunicación clara y resultados sostenibles, construyendo software que fortalece la presencia digital y la operación de negocios modernos.',
+          about_c1_label:'Compromiso', about_c1_val:'Calidad técnica y atención cercana',
+          about_c2_label:'Enfoque', about_c2_val:'Soluciones pensadas para crecer',
+          about_c3_label:'Confianza', about_c3_val:'Trabajamos con rigor, transparencia y profesionalismo en cada proyecto.',
+          contact_heading:'Contacto', contact_p:'Estamos listos para ayudarte a materializar tu idea o mejorar tu presencia digital con soluciones tecnológicas a medida.',
+          contact_email_label:'Correo:', contact_wa_label:'WhatsApp:',
+          form_name_label:'Nombre', form_name_ph:'Tu nombre',
+          form_email_label:'Correo electrónico', form_email_ph:'tu@email.com',
+          form_msg_label:'Mensaje', form_msg_ph:'Cuéntanos sobre tu proyecto',
+          form_btn:'Enviar mensaje',
+          footer_copy:'Todos los derechos reservados.', footer_sub:'Desarrollo profesional y soluciones digitales confiables.',
+        },
+        en: {
+          nav_services:'Services', nav_projects:'Projects', nav_about:'About', nav_contact:'Contact',
+          hero_badge:'Technology that drives results',
+          hero_h2:'Custom software development and application solutions',
+          hero_p:'At PS Software Soluciones we turn ideas into reliable, scalable digital platforms aligned with your business goals.',
+          hero_cta1:'Contact us', hero_cta2:'View services',
+          hc_exp_label:'Experience', hc_exp_val:'100%', hc_exp_sub:'Personalized approach',
+          hc_del_label:'Delivery', hc_del_val:'Custom-built', hc_del_sub:'Solutions tailored to your business',
+          hc_prop_label:'Our approach', hc_prop_val:'We design robust, modern software focused on real results.',
+          svc_heading:'Services', svc_sub:'We help companies and entrepreneurs turn technical needs into effective digital solutions.',
+          svc1_title:'Web Development', svc1_desc:'Modern websites and platforms with a clear, fast visual experience focused on results.',
+          svc2_title:'Technical Consulting', svc2_desc:'Strategic guidance to define architectures, processes, and technology solutions suited to your business.',
+          svc3_title:'App Development', svc3_desc:'Custom apps and digital tools to optimize operations, productivity, and customer experience.',
+          proj_badge:'Portfolio', proj_heading:'Featured Projects', proj_sub:'Real platforms built and deployed in production for clients and businesses.',
+          about_heading:'About us',
+          about_p1:"PS Software Soluciones was born with the mission of providing reliable, efficient technology solutions aligned with each client's real needs.",
+          about_p2:'We work with a focus on quality, clear communication, and sustainable results, building software that strengthens the digital presence and operations of modern businesses.',
+          about_c1_label:'Commitment', about_c1_val:'Technical quality and close attention',
+          about_c2_label:'Focus', about_c2_val:'Solutions built to scale',
+          about_c3_label:'Trust', about_c3_val:'We work with rigor, transparency, and professionalism in every project.',
+          contact_heading:'Contact', contact_p:"We're ready to help you bring your idea to life or improve your digital presence with custom technology solutions.",
+          contact_email_label:'Email:', contact_wa_label:'WhatsApp:',
+          form_name_label:'Name', form_name_ph:'Your name',
+          form_email_label:'Email address', form_email_ph:'you@email.com',
+          form_msg_label:'Message', form_msg_ph:'Tell us about your project',
+          form_btn:'Send message',
+          footer_copy:'All rights reserved.', footer_sub:'Professional development and reliable digital solutions.',
+        },
+      };
+
+      let currentLang = localStorage.getItem('ps_lang') || 'es';
+
+      function applyLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('ps_lang', lang);
+        const t = TR[lang];
+        document.getElementById('htmlRoot').lang = lang;
+
+        // Active Language Highlight
+        const isEs = lang === 'es';
+        document.getElementById('lblEs').style.opacity = isEs ? '1' : '0.4';
+        document.getElementById('lblEn').style.opacity = isEs ? '0.4' : '1';
+
+        // Static elements
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (t[key] !== undefined) {
+            (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')
+              ? (el.placeholder = t[key])
+              : (el.textContent  = t[key]);
+          }
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+          const key = el.getAttribute('data-i18n-ph');
+          if (t[key] !== undefined) el.placeholder = t[key];
+        });
+
+        // Carousel cards
+        PROJECTS.forEach((p, i) => {
+          const badge = document.getElementById(`cbadge-${i}`);
+          const sub   = document.getElementById(`csub-${i}`);
+          const cta   = document.getElementById(`ccta-${i}`);
+          if (badge) badge.textContent = p[`badge_${lang}`];
+          if (sub)   sub.textContent   = p[`subtitle_${lang}`];
+          if (cta)   cta.textContent   = p[`cta_${lang}`];
+        });
+      }
+
+      document.getElementById('langToggle').addEventListener('click', () => {
+        applyLang(currentLang === 'es' ? 'en' : 'es');
+      });
+
+      applyLang(currentLang);
     </script>
   </body>
 </html>
