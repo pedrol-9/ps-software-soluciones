@@ -27,8 +27,9 @@
       };
     </script>
     <style>
+      html, body { overflow-x: hidden; width: 100%; position: relative; }
       html { scroll-behavior: smooth; }
-      body { font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg,#f8fbff 0%,#f1f5f9 100%); overflow-x: hidden; }
+      body { font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg,#f8fbff 0%,#f1f5f9 100%); }
 
       /* ── Floating Language Toggle ── */
       #langToggle {
@@ -89,8 +90,7 @@
         border-radius: 26px;
         overflow: hidden;
         cursor: pointer;
-        transition: all 0.6s cubic-bezier(0.34, 1.15, 0.64, 1);
-        will-change: transform, opacity, filter;
+        transition: transform 0.6s cubic-bezier(0.34, 1.15, 0.64, 1), opacity 0.6s ease;
         user-select: none;
         -webkit-user-select: none;
       }
@@ -100,14 +100,12 @@
         transform: translateX(-50%) translateY(-50%) translateZ(0px) scale(1);
         opacity: 1;
         z-index: 10;
-        filter: none;
         pointer-events: all;
       }
       .proj-card.c-next {
         transform: translateX(calc(-50% + 360px)) translateY(-50%) translateZ(-120px) rotateY(-20deg) scale(0.82);
         opacity: 0.68;
         z-index: 6;
-        filter: brightness(0.7) saturate(0.8);
         pointer-events: all;
         cursor: pointer;
       }
@@ -115,7 +113,6 @@
         transform: translateX(calc(-50% - 360px)) translateY(-50%) translateZ(-120px) rotateY(20deg) scale(0.82);
         opacity: 0.68;
         z-index: 6;
-        filter: brightness(0.7) saturate(0.8);
         pointer-events: all;
         cursor: pointer;
       }
@@ -123,14 +120,12 @@
         transform: translateX(calc(-50% + 620px)) translateY(-50%) translateZ(-280px) rotateY(-28deg) scale(0.62);
         opacity: 0.25;
         z-index: 2;
-        filter: blur(1.5px) brightness(0.5) saturate(0.5);
         pointer-events: none;
       }
       .proj-card.c-far-prev {
         transform: translateX(calc(-50% - 620px)) translateY(-50%) translateZ(-280px) rotateY(28deg) scale(0.62);
         opacity: 0.25;
         z-index: 2;
-        filter: blur(1.5px) brightness(0.5) saturate(0.5);
         pointer-events: none;
       }
       .proj-card.c-hidden {
