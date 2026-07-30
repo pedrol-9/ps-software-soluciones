@@ -460,15 +460,49 @@
       [data-i18n] { transition: opacity 0.12s ease; }
 
       /* ── Responsive ── */
-      @media (max-width: 640px) {
-        .proj-card { width: 310px; height: 400px; }
-        .proj-card.c-next { transform: translateX(calc(-50% + 250px)) translateY(-50%) translateZ(-100px) rotateY(-18deg) scale(0.76); }
-        .proj-card.c-prev { transform: translateX(calc(-50% - 250px)) translateY(-50%) translateZ(-100px) rotateY(18deg) scale(0.76); }
+      @media (max-width: 1024px) {
+        .proj-card { width: 360px; height: 450px; }
+        .proj-card.c-next { transform: translateX(calc(-50% + 300px)) translateY(-50%) translateZ(-120px) rotateY(-20deg) scale(0.82); }
+        .proj-card.c-prev { transform: translateX(calc(-50% - 300px)) translateY(-50%) translateZ(-120px) rotateY(20deg) scale(0.82); }
+        .proj-card.c-far-next { transform: translateX(calc(-50% + 500px)) translateY(-50%) translateZ(-280px) rotateY(-28deg) scale(0.62); }
+        .proj-card.c-far-prev { transform: translateX(calc(-50% - 500px)) translateY(-50%) translateZ(-280px) rotateY(28deg) scale(0.62); }
+        .carousel-viewport { height: 480px; }
+      }
+
+      @media (max-width: 768px) {
+        .proj-card { width: 320px; height: 420px; }
+        .proj-card.c-next { transform: translateX(calc(-50% + 260px)) translateY(-50%) translateZ(-100px) rotateY(-18deg) scale(0.76); }
+        .proj-card.c-prev { transform: translateX(calc(-50% - 260px)) translateY(-50%) translateZ(-100px) rotateY(18deg) scale(0.76); }
         .proj-card.c-far-next, .proj-card.c-far-prev { opacity: 0; pointer-events: none; }
-        #cPrev { left: 6px; }
-        #cNext { right: 6px; }
-        .carousel-viewport { height: 440px; }
+        .carousel-viewport { height: 460px; }
+        .modal-header { height: 240px; }
+        .modal-title-text { font-size: 26px; }
+      }
+
+      @media (max-width: 640px) {
+        .proj-card { width: 85vw; max-width: 300px; height: 400px; }
+        .proj-card.c-next { transform: translateX(calc(-50% + 220px)) translateY(-50%) translateZ(-100px) rotateY(-15deg) scale(0.8); opacity: 0.4; }
+        .proj-card.c-prev { transform: translateX(calc(-50% - 220px)) translateY(-50%) translateZ(-100px) rotateY(15deg) scale(0.8); opacity: 0.4; }
+        #cPrev { left: 4px; width: 42px; height: 42px; }
+        #cNext { right: 4px; width: 42px; height: 42px; }
+        .carousel-viewport { height: 430px; }
         .card-title { font-size: 22px; }
+        .modal-header { height: 200px; }
+        .modal-title-text { font-size: 22px; }
+        .modal-body { padding: 20px; }
+        .modal-header-content { left: 16px; right: 16px; bottom: 16px; padding: 12px 16px; min-width: 0; }
+        #langToggle { padding: 7px 14px 7px 10px; bottom: 16px; right: 16px; }
+        #langToggle svg { width: 14px; height: 14px; }
+        .modal-close { top: 12px; right: 12px; width: 32px; height: 32px; }
+      }
+
+      @media (max-width: 400px) {
+        .proj-card { height: 370px; }
+        .carousel-viewport { height: 400px; }
+        .card-title { font-size: 20px; margin-bottom: 4px; }
+        .card-content { padding: 20px; }
+        .card-subtitle { font-size: 12px; margin-bottom: 12px; }
+        #cPrev, #cNext { display: none; }
       }
     </style>
   </head>
